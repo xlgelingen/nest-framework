@@ -16,6 +16,7 @@ export class PostsService {
   ) {}
 
   // 创建文章
+  //Partial<T> 是一个泛型类型，它将类型 T 的所有属性转换为可选属性，使得这些属性可以不必全部提供值，而是可以选择性地提供部分值或不提供值。
   async create(post: Partial<PostsEntity>): Promise<PostsEntity> {
     const { title } = post;
     if (!title) {
