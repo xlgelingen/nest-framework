@@ -6,12 +6,7 @@ const configService = new ConfigService(); // 创建 ConfigService 实例
 // 基础配置
 const baseConfig: DataSourceOptions = {
   type: 'mysql',
-  //   host: 'localhost',
-  //   port: 3306,
-  //   username: 'root',
-  //   password: 'root',
-  //   database: 'nestjs',
-  host: configService.get('DB_HOST', 'localhost'), // 主机，默认为localhost
+  host: process.env.DB_HOST || 'localhost', // 主机，默认为localhost
   port: configService.get<number>('DB_PORT', 3306), // 端口号
   username: configService.get('DB_USERNAME', 'root'), // 用户名
   password: configService.get('DB_PASSWORD', 'root'), // 密码
@@ -21,7 +16,7 @@ const baseConfig: DataSourceOptions = {
 // 该对象用于 nestjs typeorm 初始化
 export const ormConfig: DataSourceOptions = {
   ...baseConfig,
-  entities: ['dist/**/entities/*.entity{.js,.ts}'],
+  entities: [],
 };
 
 // 该对象 typeorm cli 迁移时使用
