@@ -55,7 +55,7 @@ export class PostsController {
    * 删除
    * @param id
    */
-  @Delete('id')
+  @Delete(':id')
   async remove(@Param('id') id) {
     return await this.postsService.remove(id);
   }

@@ -19,9 +19,10 @@ import { TodoModule } from './todo/todo.module';
         port: configService.get<number>('DB_PORT', 3306), // 端口号
         username: configService.get('DB_USERNAME', 'root'), // 用户名
         password: configService.get('DB_PASSWORD', 'root'), // 密码
-        database: configService.get('DB_DATABASE', 'blog'), //数据库名
+        database: configService.get('DB_DATABASE', 'nestjs'), //数据库名
         timezone: '+08:00', //服务器上配置的时区
         synchronize: true, //根据实体自动创建数据库表， 生产环境建议关闭,否则会丢失生产数据。
+        autoLoadEntities: true, //通过 forFeature() 方法注册的每个实体都将自动添加到配置对象的 entities 数组中。
       }),
     }),
     PostsModule,
