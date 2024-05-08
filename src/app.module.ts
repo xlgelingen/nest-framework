@@ -7,9 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
 import { TodoModule } from './todo/todo.module';
 import { ormConfig } from './config/db.config';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    //为了使用环境变量
     ConfigModule.forRoot({ isGlobal: true }),
     // TypeOrmModule.forRootAsync({
     //   imports: [ConfigModule],
@@ -34,6 +37,8 @@ import { ormConfig } from './config/db.config';
     }),
     PostsModule,
     TodoModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

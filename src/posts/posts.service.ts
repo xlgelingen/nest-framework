@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity } from './entities/post.entity';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 export interface PostsRo {
   list: PostsEntity[];
@@ -17,7 +19,7 @@ export class PostsService {
 
   // 创建文章
   //Partial<T> 是一个泛型类型，它将类型 T 的所有属性转换为可选属性，使得这些属性可以不必全部提供值，而是可以选择性地提供部分值或不提供值。
-  async create(post: Partial<PostsEntity>): Promise<PostsEntity> {
+  async create(post: Partial<CreatePostDto>): Promise<PostsEntity> {
     const { title } = post;
     if (!title) {
       throw new HttpException('缺少文章标题', 401);
@@ -51,13 +53,11 @@ export class PostsService {
 
   // 获取指定文章
   async findById(id): Promise<PostsEntity> {
-    console.log('getID', id);
     return await this.postsRepository.findOne({ where: { id } });
   }
 
   // 更新文章
-  async updateById(id, post): Promise<PostsEntity> {
-    console.log('updateID', id);
+  async updateById(id, post: Partial<UpdatePostDto>): Promise<PostsEntity> {
     const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 401);
@@ -68,7 +68,6 @@ export class PostsService {
 
   // 刪除文章
   async remove(id) {
-    console.log('removeID', id);
     const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 401);
