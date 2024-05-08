@@ -7,11 +7,15 @@ import {
   Post,
   Put,
   Query,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { PostsService, PostsRo } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
+@Public()
 @Controller('post')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -20,6 +24,7 @@ export class PostsController {
    * 创建文章
    * @param post
    */
+  @HttpCode(HttpStatus.OK) //设置了 HTTP 响应状态码为 200，没这个的话，会是201
   @Post()
   async create(@Body() post: CreatePostDto) {
     return await this.postsService.create(post);
@@ -30,7 +35,6 @@ export class PostsController {
    */
   @Get()
   async findAll(@Query() query): Promise<PostsRo> {
-    console.log(111);
     return await this.postsService.findAll(query);
   }
 

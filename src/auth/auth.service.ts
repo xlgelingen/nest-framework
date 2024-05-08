@@ -1,26 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    private usersService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async signIn(user_name: string, password: string) {
+    if (!user_name || !password) {
+      throw new HttpException(`缺少用户名或密码`, HttpStatus.BAD_REQUEST);
+    }
+    const user = await this.usersService.findByName(user_name);
+    if (user?.password !== password) {
+      throw new HttpException(`用户名或密码错误`, HttpStatus.FORBIDDEN);
+    }
+    const payload = { user_name: user.user_name, sub: user.id };
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

@@ -6,7 +6,7 @@ const configService = new ConfigService(); // 创建 ConfigService 实例
 // 基础配置
 const baseConfig: DataSourceOptions = {
   type: 'mysql',
-  host: process.env.DB_HOST || 'localhost', // 主机，默认为localhost
+  host: process.env.DB_HOST, // 主机，默认为localhost
   port: configService.get<number>('DB_PORT', 3306), // 端口号
   username: configService.get('DB_USERNAME', 'root'), // 用户名
   password: configService.get('DB_PASSWORD', 'root'), // 密码

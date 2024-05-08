@@ -28,7 +28,11 @@ export class UserService {
     return await this.usersRepository.save(post);
   }
 
-  async findOne(id: number) {
+  async findByName(user_name) {
+    return await this.usersRepository.findOne({ where: { user_name } });
+  }
+
+  async findById(id) {
     return await this.usersRepository.findOne({ where: { id } });
   }
 
